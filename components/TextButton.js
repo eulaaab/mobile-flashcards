@@ -1,10 +1,20 @@
 import React from 'react'
-import { Text, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { red } from '../utils/colors';
 
-export default function TextButton() {
+export default function TextButton({ children }) {
   return (
-    <View>
-
-    </View>
+    <TouchableOpacity>
+      <Text>
+        {children}
+      </Text>
+    </TouchableOpacity>
   )
 }
+
+const styles = StyteSheet.create({
+  reset: {
+    textAlign: "center",
+    color: red,
+  }
+})
