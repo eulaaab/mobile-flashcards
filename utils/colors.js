@@ -2,8 +2,8 @@
 export const purple = "#292477";
 export const lightGray = '#666';
 export const medGray = "#757575";
-export const darkGray = '#aaa';
-export const white = "#fff";
+export const darkGray = '#aaaaaa';
+export const white = "#ffffff";
 export const red = "#b71845";
 export const orange = "#f26f28";
 export const lightOrange = '#f9d7a5';
