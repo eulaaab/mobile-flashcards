@@ -5,7 +5,7 @@ import TextButton from "./components/TextButton"
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import reducer from "./reducers";
-import { getDecks, saveDeckTitle, addCardToDeck, getDeck } from "./utils/api"
+import { getDecks, saveDeckTitle, addCardToDeck, getDeck, removeDecks } from "./utils/api"
 import { orange, white, purple } from "./utils/colors"
 
 export default class App extends Component {
@@ -28,45 +28,70 @@ export default class App extends Component {
   }
 
   handleGetDeck = () => {
-    getDeck().then(res => {
-      console.log("a deck", JSON.stringify(res))
-      this.setState({
-        data: res
-      })
+  getDeck().then(res => {
+    console.log("a deck", JSON.stringify(res))
+    this.setState({
+      data: res
     })
-  }
+  })
+}
 
-  render() {
-    //const store = createStore(reducer);
-    const data = this.state;
-    return (
-      < View style={styles.container} >
-        <TouchableOpacity style={styles.btn} onPress={this.handleGetDecks}>
-          <TextButton>
-            Deck List
-            </TextButton>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.btn} onPress={this.handleGetDeck}>
-          <TextButton>
-            Deck
-            </TextButton>
-        </TouchableOpacity>
+handleSaveDeck = () => {
+  saveDeckTitle("Test")
+}
 
-        {
-          /*
-          <View>
-          <Provider store={store}>
-          
-          </View>
-          // </Provider>
-          */
-        }
+handleAddCardToDeck = () => {
+  addCardToDeck("Test", {
+    question: "question",
+    answer: "answer"
+  })
+}
+
+
+handleRemoveDecks = () => {
+  removeDecks()
+}
+render() {
+  //const store = createStore(reducer);
+  const data = this.state;
+  return (
+    < View style={styles.container} >
+      <TouchableOpacity style={styles.btn} onPress={this.handleGetDecks}>
+        <Text style={styles.btn}>
+          Deck List
+            </Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.btn} onPress={this.handleGetDeck}>
+        <Text style={styles.btn}>
+          Deck
+            </Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.btn} onPress={this.handleSaveDeck}>
+        <Text style={styles.btn}>
+          Save Deck Title
+            </Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.btn} onPress={this.handleAddCardToDeck}>
+        <Text style={styles.btn}>
+          Add Card To Deck
+            </Text>
+      </TouchableOpacity>
+
+      {
+        /*
         <View>
-          <Text>{JSON.stringify(data)}</Text>
+        <Provider store={store}>
+        
         </View>
-      </View >
-    );
-  }
+        // </Provider>
+        */
+      }
+      <View>
+        <Text>{JSON.stringify(data)}</Text>
+      </View>
+    </View >
+  );
+}
 }
 
 const styles = StyleSheet.create({
@@ -77,10 +102,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   btn: {
-    padding: 10,
+    // padding: 5,
     backgroundColor: orange,
     alignSelf: 'center',
     borderRadius: 5,
-    margin: 20,
+    margin: 10,
   },
 });
