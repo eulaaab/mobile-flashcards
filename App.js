@@ -5,31 +5,40 @@ import TextButton from "./components/TextButton"
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import reducer from "./reducers";
-import { getDecks, saveDeckTitle, addCardToDeck } from "./utils/api"
+import { getDecks, saveDeckTitle, addCardToDeck, getDeck } from "./utils/api"
 import { orange, white, purple } from "./utils/colors"
 
 export default class App extends Component {
   state = {
-    decks: "",
+    data: "",
   }
   componentDidMount() {
     this.handleGetDecks();
   }
 
   handleGetDecks = () => {
-    getDecks().then(res => {
+    getDecks("Redux").then(res => {
       console.log('all decks', JSON.stringify(res))
       this.setState(() => ({
-        decks: res
+        data: res
       }))
     }).catch(err => {
       console.log('error in getting decks', err)
     })
   }
 
+  handleGetDeck = () => {
+    getDeck().then(res => {
+      console.log("a deck", JSON.stringify(res))
+      this.setState({
+        data: res
+      })
+    })
+  }
+
   render() {
     //const store = createStore(reducer);
-    const decks = this.state;
+    const data = this.state;
     return (
       < View style={styles.container} >
         <TouchableOpacity style={styles.btn} onPress={this.handleGetDecks}>
@@ -37,7 +46,12 @@ export default class App extends Component {
             Deck List
             </TextButton>
         </TouchableOpacity>
-        <DeckList />
+        <TouchableOpacity style={styles.btn} onPress={this.handleGetDeck}>
+          <TextButton>
+            Deck
+            </TextButton>
+        </TouchableOpacity>
+
         {
           /*
           <View>
@@ -48,7 +62,7 @@ export default class App extends Component {
           */
         }
         <View>
-          <Text>{JSON.stringify(decks)}</Text>
+          <Text>{JSON.stringify(data)}</Text>
         </View>
       </View >
     );
@@ -61,7 +75,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-  }, 
+  },
   btn: {
     padding: 10,
     backgroundColor: orange,

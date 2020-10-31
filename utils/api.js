@@ -27,23 +27,41 @@ export function getDecks() {
   // } )
 }
 
-//getDeck - takes a single id, argument and return the deck associated with the id. getItem
-// export function getDeck(id) {
-//   return AsyncStorage.getItem(DECKS_STORAGE_KEY).then(res => {
-//     return JSON.parse(DECKS_STORAGE_KEY)[id]
-//   }).catch(err => {
-//     console.log("error in getDeck", err)
-//   })
-// }
+// getDeck - takes a single id, argument and return the deck associated with the id. getItem
+export function getDeck(id) {
+  return AsyncStorage.getItem(DECKS_STORAGE_KEY).then(res => {
+    return JSON.parse(DECKS_STORAGE_KEY)[id]
+  }).catch(err => {
+    console.log("error in getDeck", err)
+  })
+}
 
 //saveDeckTitle - take a single title argument and add it to the deck. mergeItem to decks or setItem to NewDecks
-// export function saveDeckTitle(title) {
-
-// }
+export function saveDeckTitle(title) {
+  return AsyncStorage.mergeItem(DECKS_STORAGE_KEY)
+    .then(res => {
+      return JSON.stringify({
+        [title]: {
+          title,
+          questions: []
+        }
+      })
+    }).catch(err => {
+      console.log("error in getDeck", err)
+    })
+}
 
 //addCardToDeck - take in two arguments, title, and card, and will add the card to the list of questions for the deck with the associated title. setItem
-// export function addCardToDeck({ title, card }) {
-//   return {
-//     //add the card to the list of questions
-//   }
-// }
+export function addCardToDeck({ title, card }) {
+  return AsyncStorage.mergeItem(DECKS_STORAGE_KEY).then(res => {
+    return JSON.stringify({
+      [title]: {
+        questions: [...decks.questions].concat(card)
+      }
+    })
+  }).catch(err => {
+    console.log('error in addCardToDeck', err)
+  }
+
+  )
+}
