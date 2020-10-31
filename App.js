@@ -28,70 +28,65 @@ export default class App extends Component {
   }
 
   handleGetDeck = () => {
-  getDeck().then(res => {
-    console.log("a deck", JSON.stringify(res))
-    this.setState({
-      data: res
+    getDeck().then(res => {
+      console.log("a deck", JSON.stringify(res))
+      this.setState({
+        data: res
+      })
     })
-  })
-}
+  }
 
-handleSaveDeck = () => {
-  saveDeckTitle("Test")
-}
+  handleSaveDeck = () => {
+    saveDeckTitle("Test")
+  }
 
-handleAddCardToDeck = () => {
-  addCardToDeck("Test", {
-    question: "question",
-    answer: "answer"
-  })
-}
+  handleAddCardToDeck = () => {
+    addCardToDeck("Test", {
+      question: "question",
+      answer: "answer"
+    })
+  }
 
 
-handleRemoveDecks = () => {
-  removeDecks()
-}
-render() {
-  //const store = createStore(reducer);
-  const data = this.state;
-  return (
-    < View style={styles.container} >
-      <TouchableOpacity style={styles.btn} onPress={this.handleGetDecks}>
-        <Text style={styles.btn}>
-          Deck List
-            </Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.btn} onPress={this.handleGetDeck}>
-        <Text style={styles.btn}>
-          Deck
-            </Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.btn} onPress={this.handleSaveDeck}>
-        <Text style={styles.btn}>
-          Save Deck Title
-            </Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.btn} onPress={this.handleAddCardToDeck}>
-        <Text style={styles.btn}>
-          Add Card To Deck
-            </Text>
-      </TouchableOpacity>
+  handleRemoveDecks = () => {
+    removeDecks()
+  }
+  render() {
+    const store = createStore(reducer);
+    // const data = this.state;
+    return (
+      <Provider store={store}>
+        < View style={[{ flex: 1 }, styles.container]} >
+          <DeckList />
 
-      {
-        /*
-        <View>
-        <Provider store={store}>
-        
-        </View>
-        // </Provider>
-        */
-      }
-      <View>
-        <Text>{JSON.stringify(data)}</Text>
-      </View>
-    </View >
-  );
-}
+          {
+            /*
+          <TouchableOpacity style={styles.btn} onPress={this.handleGetDecks}>
+            <Text style={styles.btn}>
+              Deck List
+                </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.btn} onPress={this.handleGetDeck}>
+            <Text style={styles.btn}>
+              Deck
+                </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.btn} onPress={this.handleSaveDeck}>
+            <Text style={styles.btn}>
+              Save Deck Title
+                </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.btn} onPress={this.handleAddCardToDeck}>
+            <Text style={styles.btn}>
+              Add Card To Deck
+                </Text>
+          </TouchableOpacity>     
+            */
+          }
+        </View >
+      </Provider>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
