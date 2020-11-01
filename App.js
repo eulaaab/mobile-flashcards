@@ -2,16 +2,22 @@ import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import DeckList from "./components/DeckList"
 import TextButton from "./components/TextButton"
-import { createStore } from "redux";
+import { createStore, } from 'redux';
+import middleware from './middleware'
 import { Provider } from "react-redux";
 import reducer from "./reducers";
 import { getDecks, saveDeckTitle, addCardToDeck, getDeck, removeDecks } from "./utils/api"
+import styled from "styled-components"
+import { handleInitialData } from "./actions/index"
 import { orange, white, purple } from "./utils/colors"
 
 export default class App extends Component {
   state = {
-    data: "",
+    data: {}
   }
+  // componentDidMount() {
+  //   this.props.dispatch(handleInitialData())
+  // }
   componentDidMount() {
     this.handleGetDecks();
   }
@@ -57,7 +63,7 @@ export default class App extends Component {
     return (
       <Provider store={store}>
         < View style={[{ flex: 1 }, styles.container]} >
-          <DeckList />
+          <DeckList decks={this.state.data} />
 
           {
             /*
