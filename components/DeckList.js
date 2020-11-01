@@ -3,9 +3,13 @@ import { View, Text, StyleSheet } from "react-native"
 import { connect } from "react-redux"
 import Deck from "./Deck"
 import styled from "styled-components"
+import { handleInitialData } from "../actions/"
 
 class DeckList extends Component {
-
+  componentDidMount() {
+    console.log('decks from CptDidMount', this.props.decks)
+    this.props.dispatch(handleInitialData())
+  }
   render() {
     console.log('decks', decks)
     const { decks } = this.props;
@@ -15,8 +19,8 @@ class DeckList extends Component {
         {decks &&
           Object.values(decks).map((deck) => {
             return (
-              <View>
-                <Text key={deck.title}>{deck.title}</Text>
+              <View key={deck.title}>
+                <Text>{deck.title}</Text>
               </View>
             );
           }
@@ -52,9 +56,9 @@ color: #333;
 font-size: 20;
 `
 
-// function mapStateToProps(decks) {
-//   return {
-//     decks
-//   };
-// };
-export default connect()(DeckList);
+function mapStateToProps({decks}) {
+  return {
+    decks
+  };
+};
+export default connect(mapStateToProps)(DeckList);
