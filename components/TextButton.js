@@ -1,10 +1,10 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
-import { red } from '../utils/colors';
+import { red ,lightPurple} from '../utils/colors';
 
 export default function TextButton({ children, onPress }) {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} style={styles.container}>
       <Text style={styles.btnText}>
         {children}
       </Text>
@@ -13,13 +13,23 @@ export default function TextButton({ children, onPress }) {
 }
 
 const styles = StyleSheet.create({
-  reset: {
-    textAlign: "center",
-    color: red,
+  container: {
+    width: 200,
+    height: 60,
+    padding: 10,
+    borderRadius: 6,
+    borderWidth:2,
+    borderColor: lightPurple,
+    margin: 8,
+    marginTop: 20,
+    marginBottom: 30,
+    alignItems: "center",
+    backgroundColor: lightPurple
   },
   btnText: {
-    color: "#fff",
-    fontSize: 22,
-    textAlign: "center"
+    paddingTop: 5,
+    paddingBottom: 5,
+    fontSize: 20,
+    fontWeight: "bold",
   },
 })
