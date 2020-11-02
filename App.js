@@ -6,8 +6,8 @@ import { createStore, } from 'redux';
 import middleware from './middleware'
 import { Provider } from "react-redux";
 import reducer from "./reducers";
-import { getDecks, saveDeckTitle, addCardToDeck, getDeck, removeDecks } from "./utils/api";
-import { orange, white, purple } from "./utils/colors"
+import { getDecks, saveDeckTitle, addCardToDeck, getDeck, removeDecks,  } from "./utils/api";
+import { lightGray } from "./utils/colors"
 
 export default class App extends Component {
   // state = {
@@ -60,7 +60,7 @@ export default class App extends Component {
     // const data = this.state;
     return (
       <Provider store={store}>
-        < View style={[{ flex: 1 }, styles.container]} >
+        < View style={{ flex: 1, paddingLeft: 10, paddingRight: 10, backgroundColor: lightGray}}>
           <DeckList />
 
           {
@@ -93,18 +93,3 @@ export default class App extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  btn: {
-    // padding: 5,
-    backgroundColor: orange,
-    alignSelf: 'center',
-    borderRadius: 5,
-    margin: 10,
-  },
-});

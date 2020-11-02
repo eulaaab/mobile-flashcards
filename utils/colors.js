@@ -1,6 +1,6 @@
 
 export const purple = "#292477";
-export const lightGray = '#666';
+export const lightGray = '#CDCDCD';
 export const medGray = "#757575";
 export const darkGray = '#aaaaaa';
 export const white = "#ffffff";

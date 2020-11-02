@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native"
 import { connect } from "react-redux"
 import Deck from "./Deck"
-import styled from "styled-components"
 import { handleInitialData } from "../actions/"
+
 
 class DeckList extends Component {
   componentDidMount() {
@@ -14,8 +14,7 @@ class DeckList extends Component {
     console.log('decks', decks)
     const { decks } = this.props;
     return (
-      <View>
-        <TextStyle>This is the Deck List View.</TextStyle>
+      <ScrollView style={{paddingTop: 300}}>       
         {decks &&
           Object.values(decks).map((deck) => {
             return (
@@ -27,37 +26,18 @@ class DeckList extends Component {
           }
           )}
 
-      </View>
+      </ScrollView>
     )
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingTop: 20,
-    paddingBottom: 20,
-    paddingLeft: 10,
-    paddingRight: 10
-  },
-  center: {
-    flex: 1,
-    justifyContent: "center",
-    marginLeft: 20,
-    marginRight: 20
+    paddingTop: 300, 
+    paddingRight: 10,
+    paddingLeft: 10, 
   }
 })
-
-const CenterView = styled.View`
-flex: 1;
-align-items: center;
-justify-content: center;
-background: #333
-`
-const TextStyle = styled.Text`
-color: #333;
-font-size: 30px;
-`
 
 function mapStateToProps({ decks }) {
   return {
