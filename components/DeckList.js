@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet } from "react-native"
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native"
 import { connect } from "react-redux"
 import Deck from "./Deck"
 import styled from "styled-components"
@@ -19,15 +19,14 @@ class DeckList extends Component {
         {decks &&
           Object.values(decks).map((deck) => {
             return (
-              <View key={deck.title}>
-                <Text>{deck.title}</Text>
-              </View>
+              <TouchableOpacity key={deck.title}>
+                <Deck title={deck.title} questions={deck.questions} />
+              </TouchableOpacity>
+
             );
           }
           )}
-        <Deck />
-        <Deck />
-        <Deck />
+
       </View>
     )
   }
@@ -36,6 +35,10 @@ class DeckList extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 10,
+    paddingRight: 10
   },
   center: {
     flex: 1,
@@ -53,10 +56,10 @@ background: #333
 `
 const TextStyle = styled.Text`
 color: #333;
-font-size: 20;
+font-size: 30px;
 `
 
-function mapStateToProps({decks}) {
+function mapStateToProps({ decks }) {
   return {
     decks
   };
