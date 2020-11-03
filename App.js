@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import DeckList from "./components/DeckList"
 import DeckView from "./components/DeckView";
+import AddDeck from "./components/AddDeck";
+import AddCard from "./components/AddCard";
+import Quiz from "./components/Quiz"
 import TextButton from "./components/TextButton"
 import { createStore, } from 'redux';
 import middleware from './middleware'
@@ -62,7 +65,7 @@ export default class App extends Component {
     return (
       <Provider store={store}>
         < View style={{ flex: 1, paddingLeft: 10, paddingRight: 10, backgroundColor: lightGray }}>
-          <DeckView />
+          <Quiz />
 
           {
             /*
