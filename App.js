@@ -3,13 +3,11 @@ import { Provider } from "react-redux";
 import { createStore, } from 'redux';
 import 'react-native-gesture-handler';
 
-import { Text, View, Platform, StatusBar, } from 'react-native';
+import { View, Platform, StatusBar, } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-
-import Constants from 'expo-constants'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
 
 import middleware from './middleware'
@@ -20,10 +18,16 @@ import DeckView from "./components/DeckView";
 import AddDeck from "./components/AddDeck";
 import AddCard from "./components/AddCard";
 import Quiz from "./components/Quiz"
-import TextButton from "./components/TextButton"
-
 import { lightGray, white, purple, } from "./utils/colors"
 
+
+const Stack = createStackNavigator();
+const Tab = Platform.OS === 'ios' ? createBottomTabNavigator() : createMaterialTopTabNavigator()
+const StackNavigatorConfig = {
+  headerMode: "screen"
+}
+
+//the tabs on screen
 const RouteConfigs = {
   DeckList: {
     name: "Decks",
@@ -37,6 +41,7 @@ const RouteConfigs = {
   }
 }
 
+//setup of the tabs e.g. styling
 const TabNavigatorConfig = {
   navigationOptions: {
     header: null
@@ -57,8 +62,7 @@ const TabNavigatorConfig = {
   }
 }
 
-const Tab = Platform.OS === 'ios' ? createBottomTabNavigator() : createMaterialTopTabNavigator()
-
+//what's the tab
 const TabNav = () => (
   <Tab.Navigator {...TabNavigatorConfig}>
     <Tab.Screen {...RouteConfigs["DeckList"]} />
@@ -66,10 +70,8 @@ const TabNav = () => (
   </Tab.Navigator>
 )
 
-const StackNavigatorConfig = {
-  headerMode: "screen"
-}
 
+//the different views/components the app will go
 const StackConfig = {
   TabNav: {
     name: "Home",
@@ -87,15 +89,34 @@ const StackConfig = {
       title: "Deck View"
     }
   },
+  AddCard: {
+    name: "AddCard",
+    component: AddCard,
+    options: {
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: purple
+      }
+    }
+  },
+  Quiz: {
+    name: "Quiz",
+    component: Quiz,
+    options: {
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: purple
+      }
+    }
+  },
 }
-
-const Stack = createStackNavigator();
 
 const MainNav = () => (
   <Stack.Navigator {...StackNavigatorConfig}>
     <Stack.Screen {...StackConfig["TabNav"]} />
     <Stack.Screen {...StackConfig["DeckView"]} />
-    {/* <Stack.Screen {...StackConfig["Add Deck"]} /> */}
+    <Stack.Screen {...StackConfig["AddCard"]} />
+    <Stack.Screen {...StackConfig["Quiz"]} />
   </Stack.Navigator>
 )
 

@@ -14,7 +14,14 @@ function formatDeckResults(res) {
 
 //getDecks - return all of the decks along with their titles, questions, and answers. getItem
 export function getDecks() {
-  return AsyncStorage.getItem(DECKS_STORAGE_KEY).then(formatDeckResults)
+  return AsyncStorage.getItem(DECKS_STORAGE_KEY).then(res =>{
+    if (res === null){
+        AsyncStorage.setItem(DECK_STORAGE, JSON.stringify(decks));
+        return decks;
+    }else{
+        return JSON.parse(res);
+    }
+})
 }
 
 // getDeck - takes a single id, argument and return the deck associated with the id. getItem

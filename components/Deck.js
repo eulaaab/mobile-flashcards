@@ -1,21 +1,20 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native';
-import {red, white, black} from "../utils/colors"
+import { red, white, black } from "../utils/colors"
 import styled from "styled-components";
 
-export default function Deck(props) {
-  const { title, questions } = props;
-  console.log('questions', questions.length)
+function Deck(props) {
+  const { deck } = props;
   return (
     <View style={styles.container}>
-  <Text style={[styles.text, {fontSize: 20}]}>{title}</Text>
-  <Text style={[styles.text, {fontSize: 15}]}>({questions.length} Cards)</Text>
+      <Text style={[styles.text, { fontSize: 20 }]}>{deck.title}</Text>
+      <Text style={[styles.text, { fontSize: 15 }]}>({deck.questions.length} Cards)</Text>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {   
+  container: {
     padding: 10,
     backgroundColor: red,
     borderRadius: 6,
@@ -23,8 +22,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   text: {
-    paddingTop:5,
-    paddingBottom:5,
+    paddingTop: 5,
+    paddingBottom: 5,
     color: white,
   }
 })
+
+export default Deck;

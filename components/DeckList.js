@@ -3,29 +3,29 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-nati
 import { connect } from "react-redux"
 import Deck from "./Deck"
 import { handleInitialData } from "../actions/"
+import { NavigationContainer } from '@react-navigation/native'
+
 
 
 class DeckList extends Component {
   componentDidMount() {
-    console.log('decks from CptDidMount', this.props.decks)
-    this.props.dispatch(handleInitialData())
+    this.props.dispatch(handleInitialData());
   }
+
   render() {
-    console.log('decks', decks)
-    const { decks } = this.props;
+    const { questions, decks, navigation } = this.props;
+    // console.log('decks', this.props.decks)
     return (
-      <ScrollView style={{paddingTop: 300}}>       
+      <ScrollView style={styles.container}>
         {decks &&
           Object.values(decks).map((deck) => {
             return (
-              <TouchableOpacity key={deck.title}>
-                <Deck title={deck.title} questions={deck.questions} />
+              <TouchableOpacity key={deck.title} onPress={() => (navigation.navigate("DeckView"), { title: deck.title })}>{ }
+                <Deck deck={deck} title={deck.title} />
               </TouchableOpacity>
-
             );
           }
           )}
-
       </ScrollView>
     )
   }
@@ -33,9 +33,9 @@ class DeckList extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 300, 
+    paddingTop: 300,
     paddingRight: 10,
-    paddingLeft: 10, 
+    paddingLeft: 10,
   }
 })
 
