@@ -1,96 +1,115 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { Provider } from "react-redux";
+import { createStore, } from 'redux';
+import 'react-native-gesture-handler';
+
+import { Text, View, Platform, StatusBar, } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+
+import Constants from 'expo-constants'
+import { FontAwesome, Ionicons } from '@expo/vector-icons'
+
+import middleware from './middleware'
+import reducer from "./reducers";
+
 import DeckList from "./components/DeckList"
 import DeckView from "./components/DeckView";
 import AddDeck from "./components/AddDeck";
 import AddCard from "./components/AddCard";
 import Quiz from "./components/Quiz"
 import TextButton from "./components/TextButton"
-import { createStore, } from 'redux';
-import middleware from './middleware'
-import { Provider } from "react-redux";
-import reducer from "./reducers";
-import { getDecks, saveDeckTitle, addCardToDeck, getDeck, removeDecks, } from "./utils/api";
-import { lightGray } from "./utils/colors"
+
+import { lightGray, white, purple, } from "./utils/colors"
+
+const RouteConfigs = {
+  DeckList: {
+    name: "Decks",
+    component: DeckList,
+    options: { tabBarIcon: ({ tintColor }) => <Ionicons name='ios-bookmarks' size={30} color={tintColor} />, title: 'Decks' }
+  },
+  AddDeck: {
+    name: "Add Deck",
+    component: AddDeck,
+    options: { tabBarIcon: ({ tintColor }) => <FontAwesome name='plus-square' size={30} color={tintColor} />, title: 'Add Deck' }
+  }
+}
+
+const TabNavigatorConfig = {
+  navigationOptions: {
+    header: null
+  },
+  tabBarOptions: {
+    activeTintColor: Platform.OS === "ios" ? purple : white,
+    style: {
+      height: 100,
+      backgroundColor: Platform.OS === "ios" ? white : purple,
+      shadowColor: "rgba(0, 0, 0, 0.24)",
+      shadowOffset: {
+        width: 0,
+        height: 4
+      },
+      shadowRadius: 6,
+      shadowOpacity: 1
+    }
+  }
+}
+
+const Tab = Platform.OS === 'ios' ? createBottomTabNavigator() : createMaterialTopTabNavigator()
+
+const TabNav = () => (
+  <Tab.Navigator {...TabNavigatorConfig}>
+    <Tab.Screen {...RouteConfigs["DeckList"]} />
+    <Tab.Screen {...RouteConfigs["AddDeck"]} />
+  </Tab.Navigator>
+)
+
+const StackNavigatorConfig = {
+  headerMode: "screen"
+}
+
+const StackConfig = {
+  TabNav: {
+    name: "Home",
+    component: TabNav,
+    options: { headerShown: false }
+  },
+  DeckView: {
+    name: "DeckView",
+    component: DeckView,
+    options: {
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: purple
+      },
+      title: "Deck View"
+    }
+  },
+}
+
+const Stack = createStackNavigator();
+
+const MainNav = () => (
+  <Stack.Navigator {...StackNavigatorConfig}>
+    <Stack.Screen {...StackConfig["TabNav"]} />
+    <Stack.Screen {...StackConfig["DeckView"]} />
+    {/* <Stack.Screen {...StackConfig["Add Deck"]} /> */}
+  </Stack.Navigator>
+)
 
 export default class App extends Component {
-  // state = {
-  //   data: {}
-  // }
-  // componentDidMount() {
-  //   this.props.dispatch(handleInitialData())
-  // }
-  // componentDidMount() {
-  //   this.handleGetDecks();
-  // }
 
-  // handleGetDecks = () => {
-  //   getDecks("Redux").then(res => {
-  //     console.log('all decks', JSON.stringify(res))
-  //     this.setState(() => ({
-  //       data: res
-  //     }))
-  //   }).catch(err => {
-  //     console.log('error in getting decks', err)
-  //   })
-  // }
-
-  // handleGetDeck = () => {
-  //   getDeck().then(res => {
-  //     console.log("a deck", JSON.stringify(res))
-  //     this.setState({
-  //       data: res
-  //     })
-  //   })
-  // }
-
-  // handleSaveDeck = () => {
-  //   saveDeckTitle("Test")
-  // }
-
-  // handleAddCardToDeck = () => {
-  //   addCardToDeck("Test", {
-  //     question: "question",
-  //     answer: "answer"
-  //   })
-  // }
-
-
-  // handleRemoveDecks = () => {
-  //   removeDecks()
-  // }
   render() {
     const store = createStore(reducer, middleware);
     // const data = this.state;
     return (
       <Provider store={store}>
         < View style={{ flex: 1, paddingLeft: 10, paddingRight: 10, backgroundColor: lightGray }}>
-          <Quiz />
-
-          {
-            /*
-          <TouchableOpacity style={styles.btn} onPress={this.handleGetDecks}>
-            <Text style={styles.btn}>
-              Deck List
-                </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btn} onPress={this.handleGetDeck}>
-            <Text style={styles.btn}>
-              Deck
-                </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btn} onPress={this.handleSaveDeck}>
-            <Text style={styles.btn}>
-              Save Deck Title
-                </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btn} onPress={this.handleAddCardToDeck}>
-            <Text style={styles.btn}>
-              Add Card To Deck
-                </Text>
-          </TouchableOpacity>     
-            */
-          }
+          <NavigationContainer>
+            <MainNav />
+          </NavigationContainer>
         </View >
       </Provider>
     );
