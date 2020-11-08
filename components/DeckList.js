@@ -20,7 +20,7 @@ class DeckList extends Component {
         {decks &&
           Object.values(decks).map((deck) => {
             return (
-              <TouchableOpacity key={deck.title} onPress={() => (navigation.navigate("DeckView"), { title: deck.title })}>{ }
+              <TouchableOpacity key={deck.title} onPress={() => navigation.navigate("DeckView", { title: deck.title })}>{ }
                 <Deck deck={deck} title={deck.title} />
               </TouchableOpacity>
             );

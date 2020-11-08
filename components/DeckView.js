@@ -7,11 +7,11 @@ import TextButton from "./TextButton";
 class DeckView extends Component {
 
   render() {
-    const { deck, navigation } = this.props;
-    console.log("deck info", deck)
+    const { title, navigation } = this.props;
+    console.log("deck info", title)
     return (
       <View style={{ paddingTop: 300, alignItems: "center" }}>
-        <Text style={{ color: purple, fontSize: 45, fontWeight: "700", marginBottom: 20 }}>{deck.title}</Text>
+        <Text style={{ color: purple, fontSize: 45, fontWeight: "700", marginBottom: 20 }}>{title}</Text>
         <Text style={{ color: purple, fontSize: 25, marginBottom: 30 }}>length here</Text>
         <View>
           <TextButton>
