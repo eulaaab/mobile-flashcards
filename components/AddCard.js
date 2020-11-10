@@ -5,6 +5,8 @@ import {white, purple} from "../utils/colors"
 
 
 export default class AddCard extends Component {
+
+  //TODO: handleSubmit
   render() {
     return (
       <View style={{paddingTop: 300}}>
