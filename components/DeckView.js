@@ -3,15 +3,21 @@ import { connect } from "react-redux";
 import { View, Text, TouchableOpacity } from "react-native";
 import { white, red, purple } from "../utils/colors";
 import TextButton from "./TextButton";
+import { removeDeck } from '../actions/index';
 
 class DeckView extends Component {
 
-
+  handleDelete = (title) => {
+    // const { navigation } = this.props;
+    const { title } = this.props;
+    this.props.dispatch.removeDeck(title);
+    this.props.navigation.goBack();
+  };
   render() {
     const { title, questions, navigation } = this.props;
     console.log("deck info", title)
     return (
-      <View style={{ paddingTop: 300, alignItems: "center" }}>
+      <View style={{ paddingTop: 300, alignItems: "center", flex: 1 }}>
         <Text style={{ color: purple, fontSize: 45, fontWeight: "700", marginBottom: 20 }}>{title}</Text>
         <Text style={{ color: purple, fontSize: 25, marginBottom: 30 }}>{questions.length} Cards</Text>
         <View>
@@ -34,7 +40,7 @@ class DeckView extends Component {
           </TextButton>
         </View>
         <View >
-          <Text style={{ color: red }}>Delete Deck</Text>
+          <Text style={{ color: red }} onPress={() => this.handleDelete(title)}>Delete Deck</Text>
         </View>
         {
           questions.length === 0 ? (<View><Text style={{ color: red }}>Please add a card before you can start the quiz!</Text></View>) : null

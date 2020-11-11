@@ -19,7 +19,6 @@ class Quiz extends Component {
     this.cardFlip.addListener(({ value }) => {
       this.flipValue = value;
     })
-
     this.frontInterpolate = this.cardFlip.interpolate({
       inputRange: [0, 180],
       outputRange: ["0deg", "180deg"],
@@ -32,7 +31,7 @@ class Quiz extends Component {
 
     this.frontOpacity = this.cardFlip.interpolate({
       inputRange: [89, 90],
-      outputRage: [1, 0]
+      outputRange: [1, 0]
     })
 
     this.backOpacity = this.cardFlip.interpolate({
@@ -112,14 +111,14 @@ class Quiz extends Component {
               <View>
                 <Animated.View>
                   <Text>
-                    {questions[cardIdx].question}
+                    {questions[cardIndex].question}
                   </Text>
                 </Animated.View>
               </View>
               <View>
                 <Animated.View>
                   <Text>
-                    {questions[cardIdx].answer}
+                    {questions[cardIndex].answer}
                   </Text>
                 </Animated.View>
               </View>
