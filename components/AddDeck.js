@@ -31,7 +31,6 @@ class AddDeck extends Component {
     const { input } = this.state;
     return (
       <View style={{ paddingTop: 300, alignItems: "center" }}>
-        {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}> */}
         <KeyboardAvoidingView>
           <Text style={{ color: purple, fontSize: 30, fontWeight: "700", marginBottom: 20, alignSelf: "center" }}>What is the Title of your deck?</Text>
           <View>
@@ -50,7 +49,6 @@ class AddDeck extends Component {
 
           </View>
         </KeyboardAvoidingView>
-        {/* </TouchableWithoutFeedback> */}
       </View>
     )
   }

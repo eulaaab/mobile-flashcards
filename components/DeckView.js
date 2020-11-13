@@ -3,14 +3,15 @@ import { connect } from "react-redux";
 import { View, Text, TouchableOpacity } from "react-native";
 import { white, red, purple } from "../utils/colors";
 import TextButton from "./TextButton";
-import { removeDeck } from '../actions/index';
+import { removeDeck } from "../actions/index";
 
 class DeckView extends Component {
 
-  handleDelete = (title) => {
+  handleDelete = id => {
     // const { navigation } = this.props;
-    const { title } = this.props;
-    this.props.dispatch.removeDeck(title);
+    // const { title } = this.props;
+    this.props.dispatch(removeDeck(id));
+
     this.props.navigation.goBack();
   };
   render() {
@@ -24,16 +25,16 @@ class DeckView extends Component {
           <TextButton >
             <TouchableOpacity onPress={() => navigation.navigate(
               'AddCard',
-              { deckId: title }
+              { title: title }
             )}>
               <Text style={{ color: white }}>Add Card</Text>
             </TouchableOpacity>
           </TextButton>
         </View>
         <View >
-          <TextButton >
+          <TextButton disabled={questions.length === 0 ? true : false}  >
             <TouchableOpacity onPress={() => navigation.navigate('Quiz',
-              { deckId: title }
+              { title: title }
             )}>
               <Text style={{ color: white }}>Start Quiz</Text>
             </TouchableOpacity>
