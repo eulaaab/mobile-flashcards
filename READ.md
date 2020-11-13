@@ -32,7 +32,8 @@ VIEWS:
 ## Instructions to Install and Launch the Project
 
 - install all project dependencies with `npm install`
-- start the app with `npm start`
+- start the app with `expo start`
+- this app has been tested throughly in an iOS simulator (e.g. iPhone11) but can also run in Android device in your Expo app in mobile or the emulator.
 
 To run it locally:
 1. install all project dependencies with npm install or expo install.

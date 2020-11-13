@@ -29,7 +29,7 @@ class AddCard extends Component {
     const { question, answer } = this.state;
 
     //add card
-    dispatch(addCard(card, title));
+    this.props.dispatch(addCard(card, title));
 
     //update db
     addCardToDeck(card, title)
@@ -41,7 +41,6 @@ class AddCard extends Component {
   }
   render() {
     const { question, answer } = this.state;
-    const { deckId } = route.params;
     return (
       <View style={{ paddingTop: 200 }}>
         <Text style={{ color: purple, fontSize: 30, fontWeight: "700", marginBottom: 20, alignSelf: "center" }} >Add Card to Deck</Text>

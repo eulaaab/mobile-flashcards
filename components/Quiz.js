@@ -94,7 +94,7 @@ class Quiz extends Component {
     const { deck, navigation } = this.props;
     const { isLastCard, questionCount, cardIndex, flipSide, animatedValue } = this.state;
     const { questions } = deck;
-    console.log('this is the deck questions', deck.questions)
+    console.log('this is the deck questions', questions)
     console.log('questionCount', questionCount)
     console.log('question length', questions.length)
     return (

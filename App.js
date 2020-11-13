@@ -18,6 +18,7 @@ import DeckView from "./components/DeckView";
 import AddDeck from "./components/AddDeck";
 import AddCard from "./components/AddCard";
 import Quiz from "./components/Quiz"
+import { setLocalNotification } from "./utils/helpers"
 import { lightGray, white, purple, } from "./utils/colors"
 
 
@@ -121,13 +122,15 @@ const MainNav = () => (
 )
 
 export default class App extends Component {
-
+  componentDidMount() {
+    setLocalNotification();
+  }
   render() {
     const store = createStore(reducer, middleware);
     // const data = this.state;
     return (
       <Provider store={store}>
-        < View style={{ flex: 1, paddingLeft: 10, paddingRight: 10, backgroundColor: lightGray }}>
+        < View style={{ flex: 1, backgroundColor: lightGray }}>
           <NavigationContainer>
             <MainNav />
           </NavigationContainer>
