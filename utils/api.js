@@ -1,27 +1,44 @@
 import AsyncStorage from '@react-native-community/async-storage'
-import { decks } from "./_DATA"
+// import { decks } from "./_DATA"
+
+const decks = {
+  Apples: {
+    title: 'Apples',
+    questions: [
+      {
+        question: "Are apples a very good source for Vitamin C?",
+        answer: "Yes, they contain high amount of Vitamin C."
+      },
+      {
+        question: "How do apples grow?",
+        answer: "Many apples grow readily from seeds."
+      }
+    ]
+  },
+  JavaScript: {
+    title: 'JavaScript',
+    questions: [
+      {
+        question: 'What is a closure?',
+        answer: 'The combination of a function and the lexical environment within which that function was declared.'
+      }
+    ]
+  }
+}
 
 //how we're going to persist information
 export const DECKS_STORAGE_KEY = "MobileFlashcards:decks"
 
-export function getData() {
-  return decks;
-}
-
-function formatDeckResults(res) {
-  return res === null ? decks : JSON.parse(res);
-}
-
 //getDecks - return all of the decks along with their titles, questions, and answers. getItem
 export function getDecks() {
-  return AsyncStorage.getItem(DECKS_STORAGE_KEY).then(res =>{
-    if (res === null){
-        AsyncStorage.setItem(DECK_STORAGE, JSON.stringify(decks));
-        return decks;
-    }else{
-        return JSON.parse(res);
+  return AsyncStorage.getItem(DECKS_STORAGE_KEY).then(res => {
+    if (res === null) {
+      AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(decks));
+      return decks;
+    } else {
+      return JSON.parse(res);
     }
-})
+  })
 }
 
 // getDeck - takes a single id, argument and return the deck associated with the id. getItem
@@ -71,9 +88,14 @@ export function addCardToDeck({ title, card }) {
 }
 
 //remove Decks
-export function removeDecks(){
-  return AsyncStorage.removeItem(DECKS_STORAGE_KEY)
-  .catch(err => {
-    console.log("error in removeDeck", err)
-  })
+export function removeDecks(deckId) {
+  return AsyncStorage.removeItem(DECKS_STORAGE_KEY).then((res => {
+    const data = JSON.parse(res)
+    data[deckId] = undefined;
+    delete data[deckId]
+    AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(data))
+  }))
+    .catch(err => {
+      console.log("error in removeDeck", err)
+    })
 }

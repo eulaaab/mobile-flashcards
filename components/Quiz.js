@@ -65,7 +65,7 @@ class Quiz extends Component {
   handleQuiz = () => {
     const { questions } = this.props.deck;
     const { cardIndex, } = this.state;
-    const { correctAnswer } = questions[cardIndex];
+    const { correctAnswer } = questions[cardIndex].answer;
     const { isCorrect } = selectedAnswer === correctAnswer;
 
     if (cardIndex + 1 === questions.length) {
@@ -94,9 +94,9 @@ class Quiz extends Component {
     const { deck, navigation } = this.props;
     const { isLastCard, questionCount, cardIndex, flipSide, animatedValue } = this.state;
     const { questions } = deck;
-    console.log('this is the deck questions', questions)
-    console.log('questionCount', questionCount)
-    console.log('question length', questions.length)
+    // console.log('this is the deck questions', questions)
+    // console.log('questionCount', questionCount)
+    // console.log('question length', questions.length)
     return (
       <View style={{ paddingTop: 100, alignItems: "center" }}>
         {
@@ -110,15 +110,14 @@ class Quiz extends Component {
               }
               <View>
                 <Animated.View>
-                  <Text>
-                    {questions[cardIndex].question}
+                  <Text>                    
                   </Text>
                 </Animated.View>
               </View>
               <View>
                 <Animated.View>
                   <Text>
-                    {questions[cardIndex].answer}
+                    
                   </Text>
                 </Animated.View>
               </View>
@@ -127,17 +126,13 @@ class Quiz extends Component {
                 <TouchableOpacity>
                   <Text style={{ color: purple, fontSize: 20, marginBottom: 10 }}>Show {flipSide} Answer</Text>
                 </TouchableOpacity>
-
-                {/* FRONT SIDE OF THE QUIZ VIEW */}
                 <Animated.View>
-                  <Text style={{ color: purple, fontSize: 40, fontWeight: "700", marginBottom: 20 }}>question here</Text>
+                  <Text style={{ color: purple, fontSize: 40, fontWeight: "700", marginBottom: 20 }}>{questions[cardIndex].question}</Text>
                 </Animated.View>
                 <Animated.View>
-                  {/* BACK SIDE OF THE QUIZ VIEW */}
                   <TouchableOpacity >
-                    <Text>question here</Text>
+                    <Text>{questions[cardIndex].answer}</Text>
                   </TouchableOpacity>
-
                 </Animated.View>
                 <View>
                   <TextButton >
@@ -176,7 +171,7 @@ class Quiz extends Component {
 }
 
 function mapStateToProps({ decks }, { route }) {
-  const { deckId } = route.params;
+  const  deckId  = route.params.title;
   return {
     deck: decks[deckId]
   };

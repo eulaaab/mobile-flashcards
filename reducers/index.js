@@ -16,12 +16,11 @@ function decks(state = {}, action) {
           [deck.title]: deck
         }
       }
-    case REMOVE_DECK:
-      // const { deck } = action
-      return {
-        ...state,
-        decks: {}
-      }
+    case REMOVE_DECK: {
+      const newState = Object.assign({}, state)
+      delete newState[action.deck];
+      return newState;
+    }
     case ADD_CARD:
       const { card, title } = action
       return {

@@ -7,6 +7,9 @@ import { removeDeck } from "../actions/index";
 
 class DeckView extends Component {
 
+  shouldComponentUpdate(nextProps) {
+    return nextProps.title !== undefined;
+  }
   handleDelete = id => {
     this.props.dispatch(removeDeck(id));
     this.props.navigation.goBack();

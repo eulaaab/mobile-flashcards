@@ -1,14 +1,14 @@
 export const decks = {
-  React: {
-    title: 'React',
+  Apples: {
+    title: 'Apples',
     questions: [
       {
-        question: 'What is React?',
-        answer: 'A library for managing user interfaces'
+        question: "Are apples a very good source for Vitamin C?",
+        answer: "Yes, they contain high amount of Vitamin C."
       },
       {
-        question: 'Where do you make Ajax requests in React?',
-        answer: 'The componentDidMount lifecycle event'
+        question: "How do apples grow?",
+        answer: "Many apples grow readily from seeds."
       }
     ]
   },
