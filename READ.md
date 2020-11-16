@@ -30,12 +30,11 @@ VIEWS:
 - An option to submit the new question
 
 ## Instructions to Install and Launch the Project
-
 - install all project dependencies with `npm install`
 - start the app with `expo start`
-- this app has been tested throughly in an iOS simulator (e.g. iPhone11) but can also run in Android device in your Expo app in mobile or the emulator.
+- this app has been tested throughly in an iOS simulator (e.g. iPhone11) and an Android device using the Expo app.
 
 To run it locally:
 1. install all project dependencies with npm install or expo install.
 2. start the app with with expo start. It opens the browser and makes the bundle.
-3. Select which OS to run the simulator (iOS or Android). You can also scan the QR code to view on mobile device as long as you installed the Expo app.
+3. Select which OS to run the simulator (iOS or Android) or scan the QR code in the Expo app to view on an Android device.
