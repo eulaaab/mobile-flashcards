@@ -3,9 +3,6 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-nati
 import { connect } from "react-redux"
 import Deck from "./Deck"
 import { handleInitialData } from "../actions/"
-import { NavigationContainer } from '@react-navigation/native'
-
-
 
 class DeckList extends Component {
   componentDidMount() {
@@ -33,9 +30,9 @@ class DeckList extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 300,
-    paddingRight: 10,
-    paddingLeft: 10,
+    paddingTop: 100,
+    paddingRight: 20,
+    paddingLeft: 20,
   }
 })
 

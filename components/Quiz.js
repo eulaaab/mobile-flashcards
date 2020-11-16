@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 import { connect } from "react-redux";
 import { View, Text, TouchableOpacity, Animated, StyleSheet } from "react-native"
 import TextButton from "./TextButton"
-import { purple, lightGreen, lightOrange } from "../utils/colors"
+import { purple, lightGreen, lightOrange, seaGreen, blue, orange } from "../utils/colors"
 
 class Quiz extends Component {
   state = {
     questionCount: 0,
     cardIndex: 0,
-    correntAnswer: 0,
+    score: 0,
     flipSide: "Back",
     isLastCard: false,
     animatedValue: new Animated.Value(1)
@@ -17,7 +17,7 @@ class Quiz extends Component {
     this.cardFlip = new Animated.Value(0);
     this.flipValue = 0;
     this.cardFlip.addListener(({ value }) => {
-      this.flipValue = value;
+      this.value = value;
     })
     this.frontInterpolate = this.cardFlip.interpolate({
       inputRange: [0, 180],
@@ -41,11 +41,12 @@ class Quiz extends Component {
   }
 
   flipCard = (front = false) => {
-    if (value >= 90 || front) {
+    if (this.value >= 90 || front) {
       Animated.spring(this.cardFlip, {
         toValue: 0,
         friction: 8,
-        tension: 10
+        tension: 10,
+        useNativeDriver: true
       }).start();
       this.setState({
         flipSide: "Back"
@@ -55,6 +56,7 @@ class Quiz extends Component {
         toValue: 180,
         friction: 8,
         tension: 10,
+        useNativeDriver: true
       }).start();
       this.setState({
         flipSide: 'Front'
@@ -62,11 +64,11 @@ class Quiz extends Component {
     }
   }
 
-  handleQuiz = () => {
+  handleQuiz = (selected) => {
     const { questions } = this.props.deck;
-    const { cardIndex, } = this.state;
-    const { correctAnswer } = questions[cardIndex].answer;
-    const { isCorrect } = selectedAnswer === correctAnswer;
+    const { cardIndex, animatedValue } = this.state;
+    const { correctAnswer } = questions[cardIndex];
+    const { isCorrect } = selected === correctAnswer;
 
     if (cardIndex + 1 === questions.length) {
       this.setState((currentState) => ({
@@ -74,8 +76,8 @@ class Quiz extends Component {
         score: isCorrect ? recentScore.score + 1 : currentState.score
       }));
       Animated.sequence([
-        Animated.timing(animatedValue, { duration: 200, toValue: 2.0 }),
-        Animated.spring(animatedValue, { toValue: 1, friction: 4 })
+        Animated.timing(animatedValue, { duration: 200, toValue: 2, useNativeDriver: true }),
+        Animated.spring(animatedValue, { toValue: 1, friction: 4, useNativeDriver: true })
       ]).start();
     }
     else {
@@ -89,62 +91,74 @@ class Quiz extends Component {
     }
   }
 
+  handleRestart = () => {
+    this.setState({
+      cardIndex: 0,
+      score: 0,
+      flipSide: "Back",
+      isLastCard: false,
+    })
+  }
 
   render() {
     const { deck, navigation } = this.props;
-    const { isLastCard, questionCount, cardIndex, flipSide, animatedValue } = this.state;
+    const { isLastCard, questionCount, cardIndex, animatedValue, score } = this.state;
     const { questions } = deck;
     // console.log('this is the deck questions', questions)
     // console.log('questionCount', questionCount)
     // console.log('question length', questions.length)
+
+    const frontStyle = {
+      transform: [
+        { rotateY: this.frontInterpolate }
+      ]
+    }
+    const backStyle = {
+      transform: [
+        { rotateY: this.backInterpolate }
+      ]
+    }
     return (
       <View style={{ paddingTop: 100, alignItems: "center" }}>
         {
           !isLastCard ? (
             <View>
               <View>
-                <Text>{cardIndex + 1}/{questions.length}</Text>
+                <Text>Card {cardIndex + 1}/{questions.length}</Text>
               </View>
               {
                 //TODO: Move to Header
               }
               <View>
-                <Animated.View>
-                  <Text>                    
-                  </Text>
+                {
+                  //question
+                }
+                <Animated.View style={[frontStyle, styles.flipStyle,]}>
+                  <Text style={styles.QuestionStyle}>{questions[cardIndex].question}</Text>
                 </Animated.View>
-              </View>
-              <View>
-                <Animated.View>
-                  <Text>
-                    
-                  </Text>
-                </Animated.View>
-              </View>
-              <View>
-                {/* SHOWING ANSWER : FLIP CARD */}
-                <TouchableOpacity>
-                  <Text style={{ color: purple, fontSize: 20, marginBottom: 10 }}>Show {flipSide} Answer</Text>
-                </TouchableOpacity>
-                <Animated.View>
-                  <Text style={{ color: purple, fontSize: 40, fontWeight: "700", marginBottom: 20 }}>{questions[cardIndex].question}</Text>
-                </Animated.View>
-                <Animated.View>
+                {
+                  //answer
+                }
+                <Animated.View style={[backStyle, styles.flipStyle,]}>
                   <TouchableOpacity >
-                    <Text>{questions[cardIndex].answer}</Text>
+                    <Text style={styles.AnswerStyle}>{questions[cardIndex].answer}</Text>
                   </TouchableOpacity>
                 </Animated.View>
+                {/* SHOWING ANSWER : FLIP CARD */}
+                <TouchableOpacity onPress={() => this.flipCard()}>
+                  <Text style={styles.answer}>Show Answer!</Text>
+                </TouchableOpacity>
                 <View>
                   <TextButton >
-                    <TouchableOpacity onPress={() => this.handleSelectClick('true')}>
-                      <Text style={{ color: lightGreen }}>Correct</Text>
+                    <TouchableOpacity onPress={() => this.handleQuiz('true')}>
+                      <Text style={{ color: lightGreen, fontSize: 20, }}>Correct</Text>
                     </TouchableOpacity>
                   </TextButton >
                 </View>
                 <View >
                   <TextButton >
-                    <TouchableOpacity onPress={() => this.handleSelectClick('false')}>
-                      <Text style={{ color: lightOrange }}>Incorrect</Text>
+                    <TouchableOpacity onPress={() => this.handleQuiz('false')}>
+                      <Text style={{ color: lightOrange, fontSize: 20, }}>Incorrect</Text>
                     </TouchableOpacity>
                   </TextButton>
                 </View>
@@ -152,15 +166,17 @@ class Quiz extends Component {
             </View>
           ) : (
               <View >
-                <Animated.Text >
-                  {(correntAnswer / questions.length * 100).toFixed(0)} %
+                <Animated.Text style={[styles.score, { transform: [{ scale: animatedValue }] }]}>
+                  {(score / questions.length * 100).toFixed(0)} %
               </Animated.Text>
-                <Text >Correct!</Text>
-                <TouchableOpacity >
-                  <Text >Restart Quiz</Text>
+                <TouchableOpacity onPress={this.handleRestart}>
+                  <Text style={styles.CorrectStyle}>Correct Answers!</Text>
                 </TouchableOpacity>
                 <TouchableOpacity >
-                  <Text>Back to Deck</Text>
+                  <Text style={styles.RestartStyle}>Restart Quiz</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate("DeckView")}>
+                  <Text style={styles.BackToDeckStyle}>Back to Deck</Text>
                 </TouchableOpacity>
               </View>
             )
@@ -171,10 +187,57 @@ class Quiz extends Component {
 }
 
 function mapStateToProps({ decks }, { route }) {
-  const  deckId  = route.params.title;
+  const deckId = route.params.title;
   return {
     deck: decks[deckId]
   };
 };
 
 export default connect(mapStateToProps)(Quiz);
+
+const styles = StyleSheet.create({
+  score: {
+    marginTop: 60,
+    fontSize: 60,
+    fontWeight: 'bold',
+    marginBottom: 30,
+    color: purple
+  },
+  answer: {
+    color: purple,
+    fontSize: 20,
+    marginBottom: 10
+  },
+  flipStyle: {
+    width: 300,
+    height: 50,
+    marginTop: 1,
+    marginBottom: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backfaceVisibility: 'hidden',
+  },
+  QuestionStyle: {
+    paddingTop: 20,
+    fontSize: 20,
+  },
+  AnswerStyle: {
+    fontSize: 15,
+    color: seaGreen,
+  },
+  CorrectStyle: {
+    color: seaGreen,
+    paddingTop: 20,
+    fontSize: 20,
+  },
+  RestartStyle: {
+    color: blue,
+    paddingTop: 20,
+    fontSize: 20,
+  },
+  BackToDeckStyle: {
+    color: orange,
+    paddingTop: 20,
+    fontSize: 20,
+  }
+})

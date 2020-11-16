@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
-import { red ,lightPurple} from '../utils/colors';
+import { red, lightPurple, purple, lightGray, white } from '../utils/colors';
 
 export default function TextButton({ children, onPress }) {
   return (
@@ -18,18 +18,18 @@ const styles = StyleSheet.create({
     height: 60,
     padding: 10,
     borderRadius: 6,
-    borderWidth:2,
+    borderWidth: 2,
     borderColor: lightPurple,
     margin: 8,
     marginTop: 20,
     marginBottom: 30,
+    justifyContent: "center",
     alignItems: "center",
-    backgroundColor: lightPurple
+    backgroundColor: lightPurple,
   },
   btnText: {
-    paddingTop: 5,
-    paddingBottom: 5,
     fontSize: 20,
     fontWeight: "bold",
+    color: white,
   },
 })

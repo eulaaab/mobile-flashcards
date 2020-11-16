@@ -1,16 +1,30 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { View, Text, TextInput, KeyboardAvoidingView } from "react-native";
+import { View, Text, TextInput, KeyboardAvoidingView, StyleSheet, Keyboard } from "react-native";
 import TextButton from "./TextButton"
 import { white, purple } from "../utils/colors"
-import { addCard } from "../actions/index"
 import { addCardToDeck } from "../utils/api"
+import { addCard } from "../actions/index"
 
 
 class AddCard extends Component {
   state = {
     question: "",
     answer: ""
+  }
+
+  componentDidMount() {
+    this.keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+    );
+    this.keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+    );
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
   }
 
   handleQuestionInput = (question) => {
@@ -26,13 +40,14 @@ class AddCard extends Component {
   }
   handleSubmitCard = (card, title) => {
     const { addCard, route, navigation } = this.props;
-    const { question, answer } = this.state;
+    const { deckId } = route.params;
 
     //add card
     this.props.dispatch(addCard(card, title));
 
     //update db
     addCardToDeck(card, title)
+
     //navigate back to deckview
     navigation.navigate(
       "DeckView",
@@ -42,14 +57,14 @@ class AddCard extends Component {
   render() {
     const { question, answer } = this.state;
     return (
-      <View style={{ paddingTop: 200 }}>
-        <Text style={{ color: purple, fontSize: 30, fontWeight: "700", marginBottom: 20, alignSelf: "center" }} >Add Card to Deck</Text>
+      <View style={{ paddingTop: 100 }}>
+        <Text style={styles.TextStyle} >Add Card to Deck</Text>
         <KeyboardAvoidingView>
-          <TextInput style={{ fontSize: 20, borderWidth: 1, backgroundColor: white, borderRadius: 5, height: 60, padding: 20, margin: 20 }} onChangeText={this.handleQuestionInput} value={question}
+          <TextInput style={styles.TextInputStyle} onChangeText={this.handleQuestionInput} value={question} onSubmitEditing={Keyboard.dismiss}
             placeholder="Question" ref={ref => this.textInputRef = ref}
           />
         </KeyboardAvoidingView>
-        <TextInput style={{ fontSize: 20, borderWidth: 1, backgroundColor: white, borderRadius: 5, height: 60, padding: 20, margin: 20 }} onChangeText={this.handleAnswerInput} value={answer}
+        <TextInput onSubmitEditing={Keyboard.dismiss} style={styles.TextInputStyle} onChangeText={this.handleAnswerInput} value={answer}
           placeholder="Answer" />
         <TextButton onPress={() => this.handleSubmitCard()}>Create Card</TextButton>
       </View>
@@ -64,3 +79,22 @@ function mapStateToProps(state, { route }) {
 }
 
 export default connect(mapStateToProps)(AddCard);
+
+const styles = StyleSheet.create({
+  TextStyle: {
+    color: purple,
+    fontSize: 30,
+    fontWeight: "700",
+    marginBottom: 20,
+    alignSelf: "center"
+  },
+  TextInputStyle: {
+    fontSize: 20,
+    borderWidth: 1,
+    backgroundColor: white,
+    borderRadius: 5,
+    height: 60,
+    padding: 20,
+    margin: 20
+  },
+})

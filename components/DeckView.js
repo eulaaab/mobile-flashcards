@@ -4,7 +4,13 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { white, red, purple } from "../utils/colors";
 import TextButton from "./TextButton";
 import { removeDeck } from "../actions/index";
+import styled from "styled-components";
 
+const ContainerView = styled.View`
+padding-top: 30px;
+align-items: center;
+flex: 1
+`
 class DeckView extends Component {
 
   shouldComponentUpdate(nextProps) {
@@ -18,7 +24,7 @@ class DeckView extends Component {
     const { title, questions, navigation } = this.props;
     console.log("deck info", title)
     return (
-      <View style={{ paddingTop: 300, alignItems: "center", flex: 1 }}>
+      <ContainerView>
         <Text style={{ color: purple, fontSize: 45, fontWeight: "700", marginBottom: 20 }}>{title}</Text>
         <Text style={{ color: purple, fontSize: 25, marginBottom: 30 }}>{questions.length} Cards</Text>
         <View>
@@ -27,7 +33,7 @@ class DeckView extends Component {
               'AddCard',
               { title: title }
             )}>
-              <Text style={{ color: white }}>Add Card</Text>
+              <Text style={{ color: white, fontSize: 20 }}>Add Card</Text>
             </TouchableOpacity>
           </TextButton>
         </View>
@@ -36,17 +42,17 @@ class DeckView extends Component {
             <TouchableOpacity onPress={() => navigation.navigate('Quiz',
               { title: title }
             )}>
-              <Text style={{ color: white }}>Start Quiz</Text>
+              <Text style={{ color: white, fontSize: 20 }}>Start Quiz</Text>
             </TouchableOpacity>
           </TextButton>
         </View>
         <View >
-          <Text style={{ color: red }} onPress={() => this.handleDelete(title)}>Delete Deck</Text>
+          <Text style={{ color: red, fontSize: 15, paddingBottom: 20 }} onPress={() => this.handleDelete(title)}>Delete Deck</Text>
         </View>
         {
-          questions.length === 0 ? (<View><Text style={{ color: red }}>Please add a card before you can start the quiz!</Text></View>) : null
+          questions.length === 0 ? (<View><Text style={{ color: red, fontSize: 15, fontWeight: "bold" }}>Please add a card before you can start the quiz!</Text></View>) : null
         }
-      </View>
+      </ContainerView>
     )
   }
 }

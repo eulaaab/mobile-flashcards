@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { View, Text, TouchableOpacity, TextInput, StyleSheet, Platform, Alert, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, } from "react-native";
+import { View, Text, TextInput, KeyboardAvoidingView, Keyboard, } from "react-native";
 import TextButton from "./TextButton";
 import { white, purple, lightGray } from "../utils/colors";
 import { addDeck } from '../actions/index';
@@ -8,6 +8,20 @@ import { addDeck } from '../actions/index';
 class AddDeck extends Component {
   state = {
     input: ""
+  }
+
+  componentDidMount() {
+    this.keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+    );
+    this.keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+    );
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
   }
 
   handleInput = (input) => {
@@ -30,7 +44,7 @@ class AddDeck extends Component {
   render() {
     const { input } = this.state;
     return (
-      <View style={{ paddingTop: 300, alignItems: "center" }}>
+      <View style={{ padding: 25, paddingTop: 80, alignItems: "center" }}>
         <KeyboardAvoidingView>
           <Text style={{ color: purple, fontSize: 30, fontWeight: "700", marginBottom: 20, alignSelf: "center" }}>What is the Title of your deck?</Text>
           <View>
@@ -38,6 +52,7 @@ class AddDeck extends Component {
               placeholder="Input Deck Title"
               value={input}
               onChangeText={this.handleInput}
+              onSubmitEditing={Keyboard.dismiss}
             />
           </View>
           <View>
