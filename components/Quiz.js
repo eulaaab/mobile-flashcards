@@ -6,12 +6,13 @@ import { purple, lightGreen, lightOrange, seaGreen, blue, orange } from "../util
 
 class Quiz extends Component {
   state = {
-    questionCount: 0,
     cardIndex: 0,
     score: 0,
     flipSide: "Back",
     isLastCard: false,
-    animatedValue: new Animated.Value(1)
+    animatedValue: new Animated.Value(1),
+    correctAnswer: "true",
+    incorrectAnswer: "false"
   }
   UNSAFE_componentWillMount() {
     this.cardFlip = new Animated.Value(0);
@@ -67,13 +68,13 @@ class Quiz extends Component {
   handleQuiz = (selected) => {
     const { questions } = this.props.deck;
     const { cardIndex, animatedValue } = this.state;
-    const { correctAnswer } = questions[cardIndex];
-    const { isCorrect } = selected === correctAnswer;
+    // const { correctAnswer } = this.state;
+    const { isCorrect } = selected;
 
     if (cardIndex + 1 === questions.length) {
       this.setState((currentState) => ({
         isLastCard: true,
-        score: isCorrect ? recentScore.score + 1 : currentState.score
+        score: isCorrect === "true" ? currentState.score + 1 : currentState.score
       }));
       Animated.sequence([
         Animated.timing(animatedValue, { duration: 200, toValue: 2, useNativeDriver: true }),
@@ -84,9 +85,10 @@ class Quiz extends Component {
       this.setState((currentState) => ({
         cardIndex: currentState.cardIndex + 1,
         flipSide: "Front",
-        score: isCorrect ? currentState.score + 1 : currentState.score
+        score: isCorrect === "true" ? currentState.score + 1 : currentState.score
       })
       )
+      console.log('schore', this.state.score)
       this.flipCard(true)
     }
   }
@@ -102,7 +104,7 @@ class Quiz extends Component {
 
   render() {
     const { deck, navigation } = this.props;
-    const { isLastCard, questionCount, cardIndex, animatedValue, score } = this.state;
+    const { isLastCard, cardIndex, animatedValue, score } = this.state;
     const { questions } = deck;
     // console.log('this is the deck questions', questions)
     // console.log('questionCount', questionCount)
@@ -167,12 +169,12 @@ class Quiz extends Component {
           ) : (
               <View >
                 <Animated.Text style={[styles.score, { transform: [{ scale: animatedValue }] }]}>
-                  {(score / questions.length * 100).toFixed(0)} %
+                  {((score / questions.length) * 100).toFixed(0)} %
               </Animated.Text>
-                <TouchableOpacity onPress={this.handleRestart}>
+                <TouchableOpacity>
                   <Text style={styles.CorrectStyle}>Correct Answers!</Text>
                 </TouchableOpacity>
-                <TouchableOpacity >
+                <TouchableOpacity onPress={this.handleRestart}>
                   <Text style={styles.RestartStyle}>Restart Quiz</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate("DeckView")}>

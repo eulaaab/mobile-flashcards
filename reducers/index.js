@@ -17,9 +17,10 @@ function decks(state = {}, action) {
         }
       }
     case REMOVE_DECK: {
-      const newState = Object.assign({}, state)
-      delete newState[action.deck];
-      return newState;
+      return {
+        ...state,
+        ...action.decks
+      }
     }
     case ADD_CARD:
       const { card, title } = action
@@ -29,7 +30,7 @@ function decks(state = {}, action) {
           ...state.decks,
           [title]: {
             title: title,
-            questions: state.decks[title].questions.concat(card)
+            questions: state.decks[title].questions.concat([card])
           },
         }
       }
