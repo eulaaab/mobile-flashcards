@@ -23,14 +23,15 @@ function decks(state = {}, action) {
       }
     }
     case ADD_CARD:
-      const { card, title } = action
+      const { card, title } = action.payload
+      console.log('action', action.card, action.title,)
       return {
         ...state,
         decks: {
           ...state.decks,
           [title]: {
             title: title,
-            questions: state.decks[title].questions.concat([card])
+            questions: [...state.decks[title].questions.card]  //copy every question on that deck and then append the newly added card at the end.
           },
         }
       }

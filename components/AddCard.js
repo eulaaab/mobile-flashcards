@@ -42,10 +42,11 @@ class AddCard extends Component {
     const { route, navigation, title } = this.props;
     const { deckId } = route.params;
     // const { question, answer, } = this.state;
-    const card = {
+    let card = {
       question: this.state.question,
       answer: this.state.answer,
     };
+
     //add card
     this.props.dispatch(addCard(card, title));
 
@@ -60,6 +61,7 @@ class AddCard extends Component {
   }
   render() {
     const { question, answer } = this.state;
+    const { title } = this.props;
     return (
       <View style={{ paddingTop: 100 }}>
         <Text style={styles.TextStyle} >Add Card to Deck</Text>
@@ -70,7 +72,7 @@ class AddCard extends Component {
         </KeyboardAvoidingView>
         <TextInput onSubmitEditing={Keyboard.dismiss} style={styles.TextInputStyle} onChangeText={this.handleAnswerInput} value={answer}
           placeholder="Answer" />
-        <TextButton onPress={() => this.handleSubmitCard()} disabled={this.state.question === '' || this.state.answer === ''}>Create Card</TextButton>
+        <TextButton onPress={() => this.handleSubmitCard(title)} disabled={this.state.question === '' || this.state.answer === ''}>Create Card</TextButton>
       </View>
     )
   }

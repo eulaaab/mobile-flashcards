@@ -69,7 +69,7 @@ class Quiz extends Component {
     const { questions } = this.props.deck;
     const { cardIndex, animatedValue } = this.state;
     // const { correctAnswer } = this.state;
-    const { isCorrect } = selected;
+    let isCorrect = selected;
 
     if (cardIndex + 1 === questions.length) {
       this.setState((currentState) => ({
