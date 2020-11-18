@@ -38,11 +38,13 @@ class AddCard extends Component {
       answer,
     })
   }
-  handleSubmitCard = () => {
-    const { route, navigation, title } = this.props;
-    const { deckId } = route.params;
+  handleSubmitCard = (e) => {
+    e.preventDefault();
+    const { route, navigation } = this.props;
+    const title = this.props.route.params.title
+    // const { title } = route.params;
     // const { question, answer, } = this.state;
-    let card = {
+    const card = {
       question: this.state.question,
       answer: this.state.answer,
     };
@@ -54,10 +56,15 @@ class AddCard extends Component {
     addCardToDeck(card, title)
 
     //navigate back to deckview
-    navigation.navigate(
-      "DeckView",
-      { title: deckId }
-    );
+    this.setState({
+      question: "",
+      answer: ""
+    })
+    navigation.goBack()
+    // navigation.navigate(
+    //   "DeckView",
+    //   { title: title }
+    // );
   }
   render() {
     const { question, answer } = this.state;
@@ -72,7 +79,7 @@ class AddCard extends Component {
         </KeyboardAvoidingView>
         <TextInput onSubmitEditing={Keyboard.dismiss} style={styles.TextInputStyle} onChangeText={this.handleAnswerInput} value={answer}
           placeholder="Answer" />
-        <TextButton onPress={() => this.handleSubmitCard(title)} disabled={this.state.question === '' || this.state.answer === ''}>Create Card</TextButton>
+        <TextButton onPress={this.handleSubmitCard} disabled={this.state.question === '' || this.state.answer === ''}>Create Card</TextButton>
       </View>
     )
   }

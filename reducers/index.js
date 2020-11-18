@@ -17,21 +17,26 @@ function decks(state = {}, action) {
         }
       }
     case REMOVE_DECK: {
+      const newDecks = { ...state.decks }
+      delete newDecks[action.id]
       return {
         ...state,
-        ...action.decks
+        decks: newDecks
+        // const newState = Object.assign({}, state)
+        // delete newState[action.id];
+        // return newState;
       }
     }
     case ADD_CARD:
       const { card, title } = action.payload
-      console.log('action', action.card, action.title,)
+      console.log('action', action.payload.card, action.title,)
       return {
         ...state,
         decks: {
           ...state.decks,
           [title]: {
             title: title,
-            questions: [...state.decks[title].questions.card]  //copy every question on that deck and then append the newly added card at the end.
+            questions: [...state.decks[title].questions, card] //copy every question on that deck and then append the newly added card at the end.
           },
         }
       }

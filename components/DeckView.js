@@ -4,6 +4,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { white, red, purple } from "../utils/colors";
 import TextButton from "./TextButton";
 import { removeDeck } from "../actions/index";
+import { removeEntry } from "../utils/api"
 import styled from "styled-components";
 
 const ContainerView = styled.View`
@@ -16,8 +17,11 @@ class DeckView extends Component {
   shouldComponentUpdate(nextProps) {
     return nextProps.title !== undefined;
   }
-  handleDelete = id => {
+  handleDelete = () => {
+    console.log('title', this.props.title);
+    const id = this.props.title
     this.props.dispatch(removeDeck(id));
+    removeEntry(id);
     this.props.navigation.goBack();
   };
   render() {
@@ -47,7 +51,7 @@ class DeckView extends Component {
           </TextButton>
         </View>
         <View >
-          <Text style={{ color: red, fontSize: 15, paddingBottom: 20 }} onPress={() => this.handleDelete(title)}>Delete Deck</Text>
+          <Text style={{ color: red, fontSize: 15, paddingBottom: 20 }} onPress={this.handleDelete}>Delete Deck</Text>
         </View>
         {
           questions.length === 0 ? (<View><Text style={{ color: red, fontSize: 15, fontWeight: "bold" }}>Please add a card before you can start the quiz!</Text></View>) : null

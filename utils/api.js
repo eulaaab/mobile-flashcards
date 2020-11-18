@@ -88,13 +88,15 @@ export function addCardToDeck({ title, card }) {
 }
 
 //remove Decks
-export function removeDecks(deckId) {
-  return AsyncStorage.removeItem(DECKS_STORAGE_KEY).then((res => {
-    const data = JSON.parse(res)
-    data[deckId] = undefined;
-    delete data[deckId]
-    AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(data))
-  }))
+export function removeEntry(deckId) {
+  console.log('data', deckId)
+  return AsyncStorage.getItem(DECKS_STORAGE_KEY)
+    .then((res) => {
+      const data = JSON.parse(res)
+      // data[deckId] = undefined
+      delete data[deckId]
+      AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(data))
+    })
     .catch(err => {
       console.log("error in removeDeck", err)
     })
